@@ -5,6 +5,7 @@ import { useAppStore } from '../store/useAppStore'
 const NAV_ITEMS = [
   { label: 'Memory', view: 'work' as const },
   { label: 'About',  view: 'about' as const },
+  { label: 'Links',  view: 'links' as const },
 ]
 
 export default function Nav() {
@@ -67,18 +68,8 @@ export default function Nav() {
           color: '#F5F5F5',
           letterSpacing: '0.1em',
           lineHeight: 1,
-          marginBottom: '3px',
         }}>
           AXUXX
-        </p>
-        <p style={{
-          fontSize: '9px',
-          fontWeight: 300,
-          letterSpacing: '0.4em',
-          color: 'rgba(231,216,201,0.45)',
-          textTransform: 'uppercase',
-        }}>
-          A Love Story
         </p>
       </motion.div>
 
@@ -106,7 +97,7 @@ export default function Nav() {
                 : 'rgba(245,245,245,0.4)',
               padding: '4px 0',
               borderBottom: view === item.view
-                ? '1px solid rgba(231,216,201,0.5)'
+                ? '1px solid rgba(200,212,227,0.5)'
                 : '1px solid transparent',
               transition: 'color 0.3s ease, border-color 0.3s ease',
             }}

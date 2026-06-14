@@ -1,312 +1,274 @@
-import { useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { socialPosts } from '../data/posts'
+import { useState } from 'react'
+import { motion } from 'framer-motion'
+import PetsStrip from '../components/PetsStrip'
+import ImageLightbox from '../components/ImageLightbox'
 
-// 从日期提取年份
-function getYear(date: string | null): string {
-  if (!date) return ''
-  return date.split('-')[0]
-}
+const expImages = [
+  '/experiencepic/IMG_2122.JPG',
+  '/experiencepic/IMG_2123.JPG',
+  '/experiencepic/IMG_2127.JPG',
+  '/experiencepic/IMG_2128.JPG',
+  '/experiencepic/IMG_2129.JPG',
+  '/experiencepic/IMG_2130.JPG',
+  '/experiencepic/IMG_2132.JPG',
+  '/experiencepic/IMG_2133.JPG',
+  '/experiencepic/IMG_2134.JPG',
+  '/experiencepic/IMG_2136.JPG',
+  '/experiencepic/IMG_2138.JPG',
+  '/experiencepic/IMG_2140.JPG',
+  '/experiencepic/IMG_2141.JPG',
+  '/experiencepic/IMG_2143.JPG',
+  '/experiencepic/IMG_2144.JPG',
+  '/experiencepic/IMG_2145.JPG',
+  '/experiencepic/IMG_2146.JPG',
+  '/experiencepic/IMG_2147.JPG',
+  '/experiencepic/IMG_2148.JPG',
+  '/experiencepic/IMG_2149.JPG',
+  '/experiencepic/IMG_2150.JPG',
+]
 
-// 格式化日期显示
-function formatDate(date: string | null): string {
-  if (!date) return '未知时间'
-  const [y, m, d] = date.split('-')
-  return `${y} · ${m} · ${d}`
-}
+const foreverImages = [
+  '/Forever/6fa55e0bde344784c1d32d07ccfe5f61.JPG',
+  '/Forever/b69eee6639ec2e0f768891c546ca2f56.JPG',
+  '/Forever/IMG_0244.jpeg',
+  '/Forever/IMG_0306.jpeg',
+  '/Forever/IMG_0333.jpg',
+  '/Forever/IMG_0407.jpeg',
+  '/Forever/IMG_0408.jpeg',
+  '/Forever/IMG_0412.jpeg',
+  '/Forever/IMG_0432.JPG',
+  '/Forever/IMG_0439.jpeg',
+  '/Forever/IMG_0544.jpeg',
+  '/Forever/IMG_0587.jpeg',
+  '/Forever/IMG_0589.jpeg',
+  '/Forever/IMG_0591.jpeg',
+  '/Forever/IMG_0610.JPG',
+  '/Forever/IMG_0660.jpeg',
+  '/Forever/IMG_0667.jpeg',
+  '/Forever/IMG_0669.jpeg',
+  '/Forever/IMG_0685.jpeg',
+  '/Forever/IMG_0698.jpg',
+  '/Forever/IMG_0699.jpg',
+  '/Forever/IMG_0725.jpeg',
+  '/Forever/IMG_0726.jpeg',
+  '/Forever/IMG_0730.jpeg',
+  '/Forever/IMG_0733.jpeg',
+  '/Forever/IMG_0738.JPG',
+  '/Forever/IMG_0773.JPG',
+  '/Forever/IMG_0795.jpeg',
+  '/Forever/IMG_0828.jpeg',
+  '/Forever/IMG_0829.jpeg',
+  '/Forever/IMG_0850.jpeg',
+  '/Forever/IMG_0867.JPG',
+  '/Forever/IMG_0868.JPG',
+  '/Forever/IMG_0871.JPG',
+  '/Forever/IMG_0879.JPG',
+  '/Forever/IMG_0880.JPG',
+  '/Forever/IMG_0908.jpg',
+  '/Forever/IMG_0918.jpeg',
+  '/Forever/IMG_0919.jpeg',
+  '/Forever/IMG_0934.jpeg',
+  '/Forever/IMG_0943.JPG',
+  '/Forever/IMG_0965.jpeg',
+  '/Forever/IMG_0968.jpeg',
+  '/Forever/IMG_0969.jpeg',
+  '/Forever/IMG_0977.JPG',
+  '/Forever/IMG_1066.jpeg',
+  '/Forever/IMG_1464.jpeg',
+  '/Forever/IMG_1497.jpeg',
+  '/Forever/IMG_1500.jpeg',
+  '/Forever/IMG_1556.jpeg',
+  '/Forever/IMG_1558.jpeg',
+  '/Forever/IMG_1560.jpeg',
+  '/Forever/IMG_1566.jpeg',
+  '/Forever/IMG_1655.jpeg',
+  '/Forever/IMG_1684.jpeg',
+  '/Forever/IMG_1846.JPG',
+  '/Forever/IMG_2139.jpeg',
+  '/Forever/IMG_2561.JPG',
+  '/Forever/IMG_3253.jpeg',
+  '/Forever/IMG_3378.JPG',
+  '/Forever/IMG_3380.jpeg',
+  '/Forever/IMG_3393.JPG',
+  '/Forever/IMG_3395.JPG',
+  '/Forever/IMG_3510.jpeg',
+  '/Forever/IMG_3523.JPG',
+  '/Forever/IMG_3567.jpeg',
+  '/Forever/IMG_3568.jpeg',
+  '/Forever/IMG_3569.jpeg',
+  '/Forever/IMG_3939.JPG',
+  '/Forever/IMG_4136.jpeg',
+  '/Forever/IMG_4461.jpeg',
+  '/Forever/IMG_4641.jpeg',
+  '/Forever/IMG_4642.jpeg',
+]
 
-// 渲染正文：对话行单独处理
-function renderContent(content: string) {
-  const lines = content.split('\n')
-  return lines.map((line, i) => {
-    const isDialog = line.startsWith('"') || line.startsWith('“') || line.startsWith('"')
-    const isEmpty = line.trim() === ''
-    if (isEmpty) return <div key={i} style={{ height: '1.2em' }} />
-    return (
-      <p
-        key={i}
-        style={{
-          fontSize: isDialog ? '15px' : '14px',
-          fontWeight: 300,
-          lineHeight: 2.2,
-          letterSpacing: isDialog ? '0.04em' : '0.06em',
-          color: isDialog
-            ? 'rgba(245,245,245,0.82)'
-            : 'rgba(184,189,199,0.65)',
-          fontStyle: isDialog ? 'italic' : 'normal',
-          fontFamily: isDialog ? '"Playfair Display", serif' : 'inherit',
-          margin: 0,
-        }}
-      >
-        {line}
-      </p>
-    )
-  })
+const xxImages = [
+  '/xx/1.jpg',
+  '/xx/10.JPEG',
+  '/xx/11.jpg',
+  '/xx/12.jpg',
+  '/xx/13.PNG',
+  '/xx/14.PNG',
+  '/xx/15.PNG',
+  '/xx/16.PNG',
+  '/xx/17.PNG',
+  '/xx/19.PNG',
+  '/xx/2 (2).jpg',
+  '/xx/2.jpg',
+  '/xx/20.PNG',
+  '/xx/21.PNG',
+  '/xx/22.PNG',
+  '/xx/23.PNG',
+  '/xx/23.jpg',
+  '/xx/24.PNG',
+  '/xx/25.jpg',
+  '/xx/3.jpg',
+  '/xx/4.jpg',
+  '/xx/5.jpg',
+  '/xx/6.jpg',
+  '/xx/7.JPG',
+  '/xx/8.jpg',
+  '/xx/9.jpg',
+]
+
+function ImageStrip({
+  images,
+  duration = 40,
+  reverse = false,
+}: {
+  images: string[]
+  duration?: number
+  reverse?: boolean
+}) {
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
+
+  return (
+    <>
+      <ImageLightbox
+        images={images}
+        currentIndex={lightboxIndex}
+        onClose={() => setLightboxIndex(null)}
+        onNavigate={setLightboxIndex}
+      />
+
+      <div style={{ width: '100%', overflow: 'hidden', padding: '20px 0' }}>
+        <div style={{ position: 'relative', overflow: 'hidden' }}>
+          <div style={{
+            position: 'absolute', left: 0, top: 0, bottom: 0, width: '120px',
+            background: 'linear-gradient(to right, #0F1115, transparent)',
+            zIndex: 2, pointerEvents: 'none',
+          }} />
+          <div style={{
+            position: 'absolute', right: 0, top: 0, bottom: 0, width: '120px',
+            background: 'linear-gradient(to left, #0F1115, transparent)',
+            zIndex: 2, pointerEvents: 'none',
+          }} />
+
+          <motion.div
+            animate={{ x: reverse ? ['-50%', '0%'] : ['0%', '-50%'] }}
+            transition={{ duration, repeat: Infinity, ease: 'linear' }}
+            style={{ display: 'flex', gap: '12px', width: 'max-content', paddingLeft: '12px' }}
+          >
+            {[...images, ...images].map((src, i) => (
+              <motion.div
+                key={i}
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+                onClick={() => setLightboxIndex(i % images.length)}
+                style={{
+                  flexShrink: 0,
+                  width: '220px',
+                  height: '220px',
+                  borderRadius: '12px',
+                  overflow: 'hidden',
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+                  cursor: 'zoom-in',
+                }}
+              >
+                <img
+                  src={src}
+                  alt=""
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    filter: 'brightness(0.85) saturate(0.88)',
+                    display: 'block',
+                    pointerEvents: 'none',
+                  }}
+                />
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </div>
+    </>
+  )
 }
 
 export default function AboutSection() {
-  const scrollRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({ target: scrollRef })
-  const lineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%'])
-
   return (
     <section
       id="about"
       style={{
         background: '#0F1115',
         minHeight: '100vh',
-        display: 'flex',
         paddingTop: '72px',
-      }}
-    >
-      {/* ━━━ 左侧固定栏 ━━━ */}
-      <div style={{
-        position: 'sticky',
-        top: '72px',
-        width: '320px',
-        flexShrink: 0,
-        height: 'calc(100vh - 72px)',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        padding: '48px 48px 48px 52px',
-        borderRight: '1px solid rgba(255,255,255,0.05)',
-      }}>
-
-        {/* 小标 */}
+        gap: '60px',
+        padding: '120px 0',
+      }}
+    >
+      {/* 小标题 */}
+      <div style={{ textAlign: 'center' }}>
         <p style={{
-          fontSize: '9px',
+          fontSize: '10px',
           fontWeight: 300,
           letterSpacing: '0.5em',
           textTransform: 'uppercase',
-          color: 'rgba(231,216,201,0.45)',
-          marginBottom: '32px',
+          color: 'rgba(231,216,201,0.3)',
+          marginBottom: '12px',
         }}>
-          Our Story
+          About Us
         </p>
-
-        {/* 主标题 */}
         <h2 style={{
           fontFamily: '"Playfair Display", serif',
-          fontSize: '28px',
+          fontSize: 'clamp(28px, 4vw, 48px)',
           fontWeight: 400,
-          color: '#F5F5F5',
-          lineHeight: 1.3,
-          letterSpacing: '0.02em',
-          marginBottom: '32px',
+          color: 'rgba(245,245,245,0.85)',
+          letterSpacing: '0.05em',
         }}>
           AXUXX
         </h2>
-
-        {/* 核心金句 */}
-        <p style={{
-          fontFamily: '"Playfair Display", serif',
-          fontSize: '15px',
-          fontWeight: 400,
-          fontStyle: 'italic',
-          color: 'rgba(231,216,201,0.75)',
-          lineHeight: 2,
-          letterSpacing: '0.04em',
-          marginBottom: '48px',
-        }}>
-          我想<br />
-          我这辈子<br />
-          没她不行了
-        </p>
-
-        {/* 分割线 */}
-        <div style={{
-          width: '32px',
-          height: '1px',
-          background: 'rgba(231,216,201,0.25)',
-          marginBottom: '32px',
-        }} />
-
-        {/* 统计信息 */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          {[
-            { label: 'Since', value: '2021' },
-            { label: 'Memories', value: `${socialPosts.length}` },
-            { label: 'Together', value: '∞' },
-          ].map((item) => (
-            <div key={item.label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-              <span style={{
-                fontSize: '9px',
-                fontWeight: 300,
-                letterSpacing: '0.35em',
-                textTransform: 'uppercase',
-                color: 'rgba(184,189,199,0.35)',
-              }}>
-                {item.label}
-              </span>
-              <span style={{
-                fontFamily: '"Playfair Display", serif',
-                fontSize: '18px',
-                fontWeight: 400,
-                color: 'rgba(245,245,245,0.5)',
-              }}>
-                {item.value}
-              </span>
-            </div>
-          ))}
-        </div>
-
-        {/* 滚动进度线 */}
-        <div style={{
-          position: 'absolute',
-          bottom: 0,
-          left: '51px',
-          width: '1px',
-          height: '120px',
-          background: 'rgba(255,255,255,0.04)',
-          overflow: 'hidden',
-        }}>
-          <motion.div
-            style={{
-              width: '1px',
-              height: lineHeight,
-              background: 'linear-gradient(to bottom, rgba(231,216,201,0.6), transparent)',
-            }}
-          />
-        </div>
-
       </div>
 
-      {/* ━━━ 右侧滚动内容 ━━━ */}
-      <div
-        ref={scrollRef}
-        style={{ flex: 1, padding: '120px 80px 200px 100px' }}
-      >
-        {socialPosts.map((post, index) => {
-          const year = getYear(post.date)
-          const prevYear = index > 0 ? getYear(socialPosts[index - 1].date) : null
-          const showYear = year && year !== prevYear
+      {/* 第一条：Forever 向左滚动 */}
+      <ImageStrip
+        images={foreverImages}
+        duration={45}
+        reverse={false}
+      />
 
-          return (
-            <div key={post.id}>
+      {/* 第二条：experiencepic 向左滚动 */}
+      <ImageStrip
+        images={expImages}
+        duration={40}
+        reverse={false}
+      />
 
-              {/* 年份大字水印 */}
-              {showYear && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1.2 }}
-                  style={{
-                    position: 'relative',
-                    marginBottom: '80px',
-                    marginTop: index === 0 ? '0' : '120px',
-                  }}
-                >
-                  <span style={{
-                    fontFamily: '"Playfair Display", serif',
-                    fontSize: 'clamp(80px, 12vw, 140px)',
-                    fontWeight: 400,
-                    color: 'rgba(231,216,201,0.04)',
-                    letterSpacing: '0.15em',
-                    lineHeight: 1,
-                    userSelect: 'none',
-                    display: 'block',
-                  }}>
-                    {year}
-                  </span>
-                </motion.div>
-              )}
+      {/* 第三条：xx 向右滚动 */}
+      <ImageStrip
+        images={xxImages}
+        duration={36}
+        reverse={true}
+      />
 
-              {/* 单条记忆 */}
-              <motion.article
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-80px' }}
-                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] as const }}
-                style={{ marginBottom: '160px' }}
-              >
+      {/* 第三条：pets 向右滚动 */}
+      <PetsStrip />
 
-                {/* 标题（如果有） */}
-                {post.title && (
-                  <p style={{
-                    fontSize: '10px',
-                    fontWeight: 300,
-                    letterSpacing: '0.4em',
-                    textTransform: 'uppercase',
-                    color: 'rgba(231,216,201,0.4)',
-                    marginBottom: '24px',
-                  }}>
-                    {post.title}
-                  </p>
-                )}
-
-                {/* 图片 */}
-                <div style={{
-                  overflow: 'hidden',
-                  borderRadius: '4px',
-                  marginBottom: '40px',
-                  boxShadow: '0 24px 80px rgba(0,0,0,0.7)',
-                }}>
-                  <motion.img
-                    src={post.imageSrc}
-                    alt={post.title || formatDate(post.date)}
-                    whileHover={{ scale: 1.03 }}
-                    transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] as const }}
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      display: 'block',
-                      filter: 'brightness(0.88) saturate(0.85)',
-                    }}
-                  />
-                </div>
-
-                {/* 日期 */}
-                <p style={{
-                  fontSize: '9px',
-                  fontWeight: 300,
-                  letterSpacing: '0.45em',
-                  color: 'rgba(184,189,199,0.3)',
-                  marginBottom: '24px',
-                  textTransform: 'uppercase',
-                }}>
-                  {formatDate(post.date)}
-                  {post.location && ` · ${post.location}`}
-                </p>
-
-                {/* 正文 */}
-                <div style={{ maxWidth: '540px' }}>
-                  {renderContent(post.content)}
-                </div>
-
-              </motion.article>
-            </div>
-          )
-        })}
-
-        {/* 结尾 */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.5 }}
-          style={{ textAlign: 'center', paddingTop: '80px' }}
-        >
-          <div style={{
-            width: '1px',
-            height: '80px',
-            background: 'linear-gradient(to bottom, rgba(231,216,201,0.3), transparent)',
-            margin: '0 auto 40px',
-          }} />
-          <p style={{
-            fontFamily: '"Playfair Display", serif',
-            fontSize: '13px',
-            fontWeight: 400,
-            fontStyle: 'italic',
-            color: 'rgba(231,216,201,0.3)',
-            letterSpacing: '0.1em',
-          }}>
-            — To be continued
-          </p>
-        </motion.div>
-
-      </div>
     </section>
   )
 }

@@ -4,11 +4,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink:   '#0D0C0B',
-        paper: '#F7F4EF',
-        blush: '#D4A89A',
-        dim:   '#E8E4DD',
-        muted: '#6B6560',
+        ink:   '#0A0D12',
+        paper: '#EDF1F7',
+        frost: '#8BAAC4',
+        dim:   '#CED6E0',
+        muted: '#5D636B',
       },
       fontFamily: {
         display: ['"Playfair Display"', 'serif'],

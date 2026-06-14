@@ -1,5 +1,5 @@
 export type GridSize = 'large' | 'medium' | 'tall'
-export type AppView = 'work' | 'about'
+export type AppView = 'work' | 'about' | 'links'
 export type DetailState = 'closed' | 'open' | 'zoomed'
 
 export interface MemoryItem {
@@ -28,6 +28,7 @@ export interface AboutData {
 export interface SiteConfig {
   title: string
   subtitle: string
+  coupleNames?: string
   since: string
   heroImg: string
 }
