@@ -131,11 +131,9 @@ export default function LinksSection() {
         </FadeIn>
 
         {/* 链接卡片 */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          {links.map((link, i) => {
-            const rotates = [3, 1, -1, -3]
-            return (
-              <motion.a
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0px' }}>
+          {links.map((link, i) => (
+            <motion.a
                 key={link.id}
                 href={link.url}
                 target="_blank"
@@ -150,26 +148,25 @@ export default function LinksSection() {
                   delay: i * 0.08,
                 }}
                 whileHover={{
-                  scale: 1.04,
-                  rotateX: -6,
-                  y: -6,
-                  boxShadow: '0 24px 60px rgba(0,0,0,0.6)',
-                  background: 'rgba(255,255,255,0.1)',
+                  x: 8,
+                  borderBottom: '1px solid rgba(231,216,201,0.6)',
                 }}
                 whileTap={{ scale: 0.97 }}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  padding: '22px 28px',
-                  background: 'rgba(255,255,255,0.0)',
-                  border: '1px solid rgba(255,255,255,0.15)',
-                  borderRadius: '14px',
+                  padding: '20px 8px',
+                  background: 'transparent',
+                  backdropFilter: 'none',
+                  WebkitBackdropFilter: 'none',
+                  border: 'none',
+                  borderBottom: '1px solid rgba(255,255,255,0.12)',
+                  borderRadius: '0',
                   textDecoration: 'none',
                   cursor: 'pointer',
                   boxShadow: 'none',
                   transformStyle: 'preserve-3d',
-                  rotateX: rotates[i],
                   transformOrigin: 'center center',
                 }}
               >
@@ -206,8 +203,7 @@ export default function LinksSection() {
                   </svg>
                 </div>
               </motion.a>
-            )
-          })}
+          ))}
         </div>
 
       </div>

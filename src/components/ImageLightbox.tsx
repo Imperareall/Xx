@@ -143,6 +143,64 @@ export default function ImageLightbox({ images, currentIndex, onClose, onNavigat
             ESC to close
           </div>
 
+          {/* 左箭头 */}
+          <motion.button
+            initial={{ opacity: 0, x: -12 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.15 }}
+            onClick={(e) => { e.stopPropagation(); goPrev() }}
+            whileTap={{ scale: 0.9 }}
+            style={{
+              position: 'absolute',
+              left: '12px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              zIndex: 501,
+              width: '44px',
+              height: '44px',
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.08)',
+              border: '1px solid rgba(255,255,255,0.15)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              color: 'rgba(245,245,245,0.7)',
+              backdropFilter: 'blur(8px)',
+            }}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M15 18l-6-6 6-6"/></svg>
+          </motion.button>
+
+          {/* 右箭头 */}
+          <motion.button
+            initial={{ opacity: 0, x: 12 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.15 }}
+            onClick={(e) => { e.stopPropagation(); goNext() }}
+            whileTap={{ scale: 0.9 }}
+            style={{
+              position: 'absolute',
+              right: '12px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              zIndex: 501,
+              width: '44px',
+              height: '44px',
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.08)',
+              border: '1px solid rgba(255,255,255,0.15)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              color: 'rgba(245,245,245,0.7)',
+              backdropFilter: 'blur(8px)',
+            }}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M9 18l6-6-6-6"/></svg>
+          </motion.button>
+
           {/* 图片 */}
           <AnimatePresence mode="wait">
             <motion.img

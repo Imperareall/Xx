@@ -4,6 +4,7 @@ import { useAppStore } from '../store/useAppStore'
 import type { MemoryItem } from '../types'
 import { memories } from '../data/memories'
 import { siteConfig } from '../data/config'
+import ParticleText from '../components/ParticleText'
 
 // ── DominoCard ──
 interface DominoProps {
@@ -243,21 +244,22 @@ export default function GridView() {
                 {siteConfig.subtitle}
               </motion.p>
 
-              <motion.h1
+              <motion.div
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8, duration: 1.2, ease: [0.16, 1, 0.3, 1] as const }}
-                style={{
-                  fontFamily: '"Playfair Display", serif',
-                  fontSize: 'clamp(32px, 5vw, 60px)',
-                  fontWeight: 400,
-                  lineHeight: 1.15,
-                  color: '#e4e4e7',
-                  marginBottom: '0',
-                }}
+                style={{ marginBottom: '0', display: 'flex', justifyContent: 'center' }}
               >
-                {siteConfig.title}
-              </motion.h1>
+                <ParticleText
+                  font={`300 italic clamp(32px, 5vw, 60px) 'Playfair Display', serif`}
+                  gradient="linear-gradient(135deg, #b8c6db, #e8ecf1, #c4ced9, #ffffff, #d5dde8, #f0f4f8, #bcc8d6)"
+                  textFilter="drop-shadow(0 0 2px rgba(255,255,255,0.6)) drop-shadow(0 0 8px rgba(200,220,255,0.4)) drop-shadow(0 1px 3px rgba(0,0,0,0.7)) drop-shadow(0 4px 12px rgba(0,0,0,0.4))"
+                  className="shimmer-text"
+                  style={{ lineHeight: 1.15 }}
+                >
+                  {siteConfig.title}
+                </ParticleText>
+              </motion.div>
 
               <motion.div
                 initial={{ scaleX: 0 }}
@@ -324,24 +326,23 @@ export default function GridView() {
           alignItems: 'center',
           background: '#0c0c0e',
         }}>
-          <motion.p
+          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 1, delay: 0.2 }}
-            style={{
-              fontSize: '24px',
-              fontWeight: 600,
-              letterSpacing: '0.12em',
-              color: 'rgba(200,200,210,0.5)',
-              textAlign: 'center',
-              marginBottom: '32px',
-              fontFamily: '"Playfair Display", serif',
-              fontStyle: 'italic',
-            }}
+            style={{ marginBottom: '32px', display: 'flex', justifyContent: 'center' }}
           >
-            一整个宇宙  换一颗红豆
-          </motion.p>
+            <ParticleText
+              font={`300 italic clamp(24px, 4vw, 40px) 'Playfair Display', serif`}
+              gradient="linear-gradient(135deg, #b8c6db, #e8ecf1, #c4ced9, #ffffff, #d5dde8, #f0f4f8, #bcc8d6)"
+              textFilter="drop-shadow(0 0 2px rgba(255,255,255,0.6)) drop-shadow(0 0 8px rgba(200,220,255,0.4)) drop-shadow(0 1px 3px rgba(0,0,0,0.7)) drop-shadow(0 4px 12px rgba(0,0,0,0.4))"
+              className="shimmer-text"
+              style={{ letterSpacing: '0.08em' }}
+            >
+              一整个宇宙  换一颗红豆
+            </ParticleText>
+          </motion.div>
 
           {/* 背景暗光斑 */}
           <div style={{ position: 'relative' }}>

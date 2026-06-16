@@ -3,9 +3,10 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+  assetsInclude: ['**/*.JPG', '**/*.JPEG', '**/*.PNG', '**/*.WEBP'],
   server: {
     watch: {
-      ignored: ['**/experiencepic/**', '**/meetpic/**', '**/合照pic/**', '**/xx/**', '**/Forever/**', '**/pets/**', '**/*.~tmp'],
+      ignored: ['**/*.~tmp'],
     },
   },
 })
