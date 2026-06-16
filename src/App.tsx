@@ -7,6 +7,7 @@ import GridView from './sections/GridView'
 import AboutSection from './sections/AboutSection'
 import LinksSection from './sections/LinksSection'
 import MusicPlayer from './components/MusicPlayer'
+import Watermark from './components/Watermark'
 import { useAppStore } from './store/useAppStore'
 
 export default function App() {
@@ -65,6 +66,7 @@ export default function App() {
       {/* DetailView 全局挂载，不参与视图切换 */}
       <DetailView />
       <MusicPlayer />
+      <Watermark />
     </div>
   )
 }
