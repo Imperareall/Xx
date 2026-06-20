@@ -4,9 +4,9 @@
 @tailwind utilities;
 
 @layer base {
-  html { scroll-behavior: smooth; background: #0c0c0e; }
+  html { scroll-behavior: smooth; background: transparent; }
   body {
-    background: #0c0c0e;
+    background: transparent;
     color: #a1a1aa;
     font-family: 'Inter', sans-serif;
     font-weight: 200;

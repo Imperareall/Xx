@@ -6,7 +6,9 @@ import DetailView from './components/DetailView'
 import GridView from './sections/GridView'
 import AboutSection from './sections/AboutSection'
 import LinksSection from './sections/LinksSection'
+import IconSection from './sections/IconSection'
 import MusicPlayer from './components/MusicPlayer'
+import StarField from './components/StarField'
 import Watermark from './components/Watermark'
 import { useAppStore } from './store/useAppStore'
 
@@ -20,6 +22,7 @@ export default function App() {
 
   return (
     <div className="grain" style={{ background: '#0c0c0e', minHeight: '100vh' }}>
+      <StarField />
       <div className="film-grain" />
       <Nav />
 
@@ -58,6 +61,18 @@ export default function App() {
             transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] as const }}
           >
             <LinksSection />
+          </motion.div>
+        )}
+
+        {view === 'icon' && (
+          <motion.div
+            key="icon"
+            initial={{ opacity: 0, y: 32 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] as const }}
+          >
+            <IconSection />
           </motion.div>
         )}
 

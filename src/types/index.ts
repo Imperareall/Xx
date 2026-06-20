@@ -1,5 +1,5 @@
 export type GridSize = 'large' | 'medium' | 'tall'
-export type AppView = 'work' | 'about' | 'links'
+export type AppView = 'work' | 'about' | 'links' | 'icon'
 export type DetailState = 'closed' | 'open' | 'zoomed'
 
 export interface MemoryItem {

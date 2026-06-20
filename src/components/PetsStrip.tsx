@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import ImageLightbox from './ImageLightbox'
 import { petsImgList } from '../hooks/useImages'
@@ -7,7 +7,6 @@ const doubled = [...petsImgList, ...petsImgList]
 
 export default function PetsStrip() {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
-  const scrollRef = useRef<HTMLDivElement>(null)
 
   const autoDuration = Math.min(Math.max(petsImgList.length * 1.2, 20), 120)
 
@@ -15,18 +14,15 @@ export default function PetsStrip() {
     <>
       <ImageLightbox images={petsImgList} currentIndex={lightboxIndex} onClose={() => setLightboxIndex(null)} onNavigate={setLightboxIndex} />
 
-      <div ref={scrollRef} style={{ overflowX: 'auto', scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
-        <div style={{ position: 'relative', overflow: 'hidden', minWidth: '100%' }}>
+      <div style={{ width: '100%', overflow: 'hidden', padding: '20px 0' }}>
+        <div style={{ position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '80px', background: 'linear-gradient(to right, #0F1115, transparent)', zIndex: 2, pointerEvents: 'none' }} />
           <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '80px', background: 'linear-gradient(to left, #0F1115, transparent)', zIndex: 2, pointerEvents: 'none' }} />
 
           <motion.div
-            drag="x"
-            dragElastic={0.1}
-            whileDrag={{ cursor: 'grabbing' }}
             animate={{ x: ['-50%', '0%'] }}
             transition={{ duration: autoDuration, repeat: Infinity, ease: 'linear' }}
-            style={{ display: 'flex', gap: '12px', width: 'max-content', padding: '20px 12px', cursor: 'grab' }}
+            style={{ display: 'flex', gap: '12px', width: 'max-content' }}
           >
             {doubled.map((src, i) => (
               <motion.div
