@@ -6,7 +6,7 @@ export default defineConfig({
   assetsInclude: ['**/*.JPG', '**/*.JPEG', '**/*.PNG', '**/*.WEBP'],
   server: {
     watch: {
-      ignored: ['**/*.~tmp'],
+      ignored: ['**/*.~tmp', '**/*.mp4', '**/*.mov', '**/*.MOV', '**/HongKong/**', '**/Yunnan/**', '**/Macau/**', '**/Shanghai/**', '**/Nanjing/**', '**/Chongqing/**', '**/Beijing/**', '**/SGMYTH/**'],
     },
   },
 })
