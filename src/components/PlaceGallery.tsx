@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
 import type { Place } from '../data/places'
 import { usePlaceImages } from '../hooks/usePlaceImages'
+import type { PlaceMedia } from '../hooks/usePlaceImages'
 
 interface Props {
   place: Place
@@ -10,7 +11,7 @@ interface Props {
 }
 
 export default function PlaceGallery({ place, onClose }: Props) {
-  const images = usePlaceImages(place.folder)
+  const media = usePlaceImages(place.folder)
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
 
   return (
@@ -31,9 +32,7 @@ export default function PlaceGallery({ place, onClose }: Props) {
       {/* 顶部导航 */}
       <div style={{
         position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
+        top: 0, left: 0, right: 0,
         height: '72px',
         display: 'flex',
         alignItems: 'center',
@@ -87,8 +86,8 @@ export default function PlaceGallery({ place, onClose }: Props) {
         </motion.button>
       </div>
 
-      {/* 图片瀑布流 */}
-      {images.length === 0 ? (
+      {/* 媒体瀑布流 */}
+      {media.length === 0 ? (
         <div style={{
           display: 'flex',
           alignItems: 'center',
@@ -101,7 +100,7 @@ export default function PlaceGallery({ place, onClose }: Props) {
             color: 'rgba(184,189,199,0.3)',
             textTransform: 'uppercase',
           }}>
-            暂无照片
+            暂无内容
           </p>
         </div>
       ) : (
@@ -111,7 +110,7 @@ export default function PlaceGallery({ place, onClose }: Props) {
           maxWidth: '1200px',
           margin: '0 auto',
         }}>
-          {images.map((src, i) => (
+          {media.map((item, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 20 }}
@@ -124,20 +123,62 @@ export default function PlaceGallery({ place, onClose }: Props) {
                 cursor: 'zoom-in',
                 borderRadius: '8px',
                 overflow: 'hidden',
+                position: 'relative',
               }}
             >
-              <motion.img
-                src={src}
-                alt=""
-                whileHover={{ scale: 1.03 }}
-                transition={{ duration: 0.5 }}
-                style={{
-                  width: '100%',
-                  height: 'auto',
-                  display: 'block',
-                  filter: 'brightness(0.88) saturate(0.88)',
-                }}
-              />
+              {item.type === 'image' ? (
+                <motion.img
+                  src={item.url}
+                  alt=""
+                  whileHover={{ scale: 1.03 }}
+                  transition={{ duration: 0.5 }}
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    display: 'block',
+                    filter: 'brightness(0.88) saturate(0.88)',
+                  }}
+                />
+              ) : (
+                <div style={{ position: 'relative' }}>
+                  <video
+                    src={item.url}
+                    muted
+                    playsInline
+                    preload="metadata"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      display: 'block',
+                      filter: 'brightness(0.88)',
+                    }}
+                  />
+                  {/* 播放图标 */}
+                  <div style={{
+                    position: 'absolute',
+                    inset: 0,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: 'rgba(0,0,0,0.2)',
+                  }}>
+                    <div style={{
+                      width: '44px',
+                      height: '44px',
+                      borderRadius: '50%',
+                      background: 'rgba(255,255,255,0.15)',
+                      backdropFilter: 'blur(8px)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                        <path d="M8 5v14l11-7z"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              )}
             </motion.div>
           ))}
         </div>
@@ -163,24 +204,49 @@ export default function PlaceGallery({ place, onClose }: Props) {
               WebkitBackdropFilter: 'blur(24px)',
             }}
           >
-            <motion.img
-              key={lightboxIndex}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              src={images[lightboxIndex]}
-              alt=""
-              onClick={e => e.stopPropagation()}
-              style={{
-                maxWidth: '88vw',
-                maxHeight: '88vh',
-                objectFit: 'contain',
-                borderRadius: '8px',
-                boxShadow: '0 32px 100px rgba(0,0,0,0.8)',
-              }}
-            />
+            {media[lightboxIndex].type === 'image' ? (
+              <motion.img
+                key={lightboxIndex}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                src={media[lightboxIndex].url}
+                alt=""
+                onClick={e => e.stopPropagation()}
+                style={{
+                  maxWidth: '88vw',
+                  maxHeight: '88vh',
+                  objectFit: 'contain',
+                  borderRadius: '8px',
+                  boxShadow: '0 32px 100px rgba(0,0,0,0.8)',
+                }}
+              />
+            ) : (
+              <motion.video
+                key={lightboxIndex}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                src={media[lightboxIndex].url}
+                controls
+                autoPlay
+                playsInline
+                onClick={e => e.stopPropagation()}
+                style={{
+                  maxWidth: '88vw',
+                  maxHeight: '88vh',
+                  borderRadius: '8px',
+                  boxShadow: '0 32px 100px rgba(0,0,0,0.8)',
+                }}
+              />
+            )}
+
+            {/* 左箭头 */}
             <button
-              onClick={e => { e.stopPropagation(); setLightboxIndex(i => i !== null && i > 0 ? i - 1 : i) }}
+              onClick={e => {
+                e.stopPropagation()
+                setLightboxIndex(i => i !== null && i > 0 ? i - 1 : i)
+              }}
               style={{
                 position: 'absolute', left: '24px',
                 background: 'rgba(255,255,255,0.08)',
@@ -192,8 +258,13 @@ export default function PlaceGallery({ place, onClose }: Props) {
             >
               <ChevronLeft size={18} strokeWidth={1.5} />
             </button>
+
+            {/* 右箭头 */}
             <button
-              onClick={e => { e.stopPropagation(); setLightboxIndex(i => i !== null && i < images.length - 1 ? i + 1 : i) }}
+              onClick={e => {
+                e.stopPropagation()
+                setLightboxIndex(i => i !== null && i < media.length - 1 ? i + 1 : i)
+              }}
               style={{
                 position: 'absolute', right: '24px',
                 background: 'rgba(255,255,255,0.08)',
@@ -205,6 +276,22 @@ export default function PlaceGallery({ place, onClose }: Props) {
             >
               <ChevronRight size={18} strokeWidth={1.5} />
             </button>
+
+            {/* 关闭按钮 */}
+            <motion.button
+              onClick={() => setLightboxIndex(null)}
+              whileHover={{ rotate: 90, scale: 1.1 }}
+              style={{
+                position: 'absolute', top: '24px', right: '24px',
+                background: 'rgba(255,255,255,0.08)',
+                border: '1px solid rgba(255,255,255,0.12)',
+                borderRadius: '50%', width: '40px', height: '40px',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                cursor: 'pointer', color: 'rgba(245,245,245,0.7)',
+              }}
+            >
+              <X size={16} strokeWidth={1.5} />
+            </motion.button>
           </motion.div>
         )}
       </AnimatePresence>
