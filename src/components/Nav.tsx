@@ -5,8 +5,9 @@ import { useAppStore } from '../store/useAppStore'
 const NAV_ITEMS = [
   { label: 'Memory', view: 'work' as const },
   { label: 'About',  view: 'about' as const },
-  { label: 'Icon',   view: 'icon' as const },
   { label: 'Links',  view: 'links' as const },
+  { label: 'Icon',   view: 'icon' as const },
+  { label: 'Journey', view: 'globe' as const },
 ]
 
 export default function Nav() {
