@@ -2,3 +2,7 @@ node_modules
 dist
 .vercel
 *.~tmp
+*.mp4
+*.MP4
+*.mov
+*.MOV
